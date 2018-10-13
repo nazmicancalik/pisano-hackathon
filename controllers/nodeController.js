@@ -1,4 +1,4 @@
-// var mongoose = require('mongoose');
+var mongoose = require('mongoose');
 var Node = require('../models/node');
 var Util = require('../utils/Util');
 
@@ -13,12 +13,16 @@ exports.nodes_list = function(req,res) {
     });
 }
 
-exports.node_detail = function(req,res) {
+exports.node_detail = function(req,res,next) {
+    if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+        res.status(400).send('Wrong Id');
+        return ;
+    }
     Node.findById(req.params.id)
         .exec(function (err, node_details) {
-            if (err) { 
-              res.status(404).send;
-            //return next(err); 
+            if (err || !node_details) { 
+              //res.status(404).send;
+              return next(err);
             }
             //Successful, so send
             var sorted_list = Util.topologicalSort(node_details);
