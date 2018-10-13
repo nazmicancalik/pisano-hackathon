@@ -5,6 +5,7 @@ var logger = require('morgan');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
+var mockRouter = require('./routes/mock');
 
 var app = express();
 
@@ -21,5 +22,6 @@ app.use('/', indexRouter);
 
 // Register API Routes
 app.use('/api/users', usersRouter);
+app.use('/api/mock', mockRouter);
 
 module.exports = app;
