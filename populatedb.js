@@ -14,14 +14,15 @@ mongoose.connection.on('error', console.error.bind(console, 'MongoDB connection 
 
 var nodes = [];
 
-function nodeCreate(name, node_type, description,dependencies, hints, instutition, cb) {
+function nodeCreate(name, node_type, description,dependencies, hints, instutition, related_links, cb) {
   nodeDetail = { 
     name: name,
     node_type: node_type,
     description: description,
     dependencies: dependencies,
     hints: hints,
-    instutition: instutition
+    instutition: instutition,
+    related_links: related_links
   }
   
   var node = new Node(nodeDetail);
@@ -40,13 +41,13 @@ function nodeCreate(name, node_type, description,dependencies, hints, instutitio
 function createNodes(cb) {
     async.parallel([
         function(callback) {
-          nodeCreate('Passport', 'document', 'Description' ,[], ['Hint 1','Hint 2', 'Hint 3'], { name: 'Nüfus Müdürlüğü', description: 'Description here', loc: { lat: 1, long: 2}}, callback);
+          nodeCreate('Passport', 'document', 'Description' ,[], ['Hint 1','Hint 2', 'Hint 3'], { name: 'Nüfus Müdürlüğü', description: 'Description here', loc: { lat: 1, long: 2}}, {name: 'link1', href:'google.com'}, callback);
         },
         function(callback) {
-          nodeCreate('Nüfus Cüzdanı', 'document', 'Description' ,[], ['Hint 1','Hint 2', 'Hint 3'], { name: 'Adliye', description: 'Description here', loc: { lat: 1, long: 2}}, callback);
+          nodeCreate('Nüfus Cüzdanı', 'document', 'Description' ,[], ['Hint 1','Hint 2', 'Hint 3'], { name: 'Adliye', description: 'Description here', loc: { lat: 1, long: 2}}, {name: 'link2', href:'google.com'}, callback);
         },
         function(callback) {
-          nodeCreate('Foto', 'action', 'Description',[], ['Hint 1','Hint 2', 'Hint 3'], { name: 'Fotoğrafçı', description: 'Description here', loc: { lat: 1, long: 2}}, callback);
+          nodeCreate('Foto', 'action', 'Description',[], ['Hint 1','Hint 2', 'Hint 3'], { name: 'Fotoğrafçı', description: 'Description here', loc: { lat: 1, long: 2}}, {name: 'link1', href:'google.com'}, callback);
         }],
         // optional callback
         cb);

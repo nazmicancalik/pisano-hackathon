@@ -12,7 +12,7 @@ var NodeSchema = new Schema(
         },
         description: String,
         dependencies: [{type: Schema.Types.ObjectId, ref: 'Node'}],
-        hints: Schema.Types.Array,
+        hints: [{type:String,required:false}],
         instution: [{
                 name: String,
                 description: String,
@@ -20,7 +20,13 @@ var NodeSchema = new Schema(
                     lat: Schema.Types.Number,
                     long: Schema.Types.Number
                 }
-        }]
+        }],
+        related_links: [
+            {
+                name: String,
+                href: String
+            }
+        ]
     }
 );
 

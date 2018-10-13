@@ -25,7 +25,9 @@ exports.node_detail = function(req,res,next) {
             Node.find({
                 '_id': { $in: sorted_list }
             }, function(err, docs){
-                res.send(docs);
+                var response = Util.sort(docs,sorted_list);
+                console.log(sorted_list);
+                res.send(response);
             });
         });
 }
