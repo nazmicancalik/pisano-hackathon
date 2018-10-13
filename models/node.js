@@ -4,16 +4,13 @@ var Schema = mongoose.Schema;
 
 var NodeSchema = new Schema(
     {
-        _id: Schema.Types.ObjectId,
         name: String,
-        type: {
-            required: true, 
-            enum: ['document', 'action'],
-        },
-        description: {
+        node_type: {
             type: String,
-            required: false
+            required: true, 
+            enum: ['document', 'action']
         },
+        description: String,
         dependencies: [{type: Schema.Types.ObjectId, ref: 'Node'}],
         hints: Schema.Types.Array,
         instution: [{
@@ -22,7 +19,7 @@ var NodeSchema = new Schema(
                 location: {
                     lat: Schema.Types.Number,
                     long: Schema.Types.Number
-                }    
+                }
         }]
     }
 );
