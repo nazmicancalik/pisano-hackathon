@@ -11,3 +11,14 @@ exports.nodes_list = function(req,res) {
         res.send(list_nodes);
     });
 }
+
+exports.node_detail = function(req,res,next) {
+    Node.findById(req.params.id)
+        .exec(function (err, node_details) {
+            if (err) { 
+              return next(err); 
+            }
+            //Successful, so send
+            res.send(node_details);
+        });
+}
