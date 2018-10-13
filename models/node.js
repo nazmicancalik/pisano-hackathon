@@ -5,7 +5,7 @@ var Schema = mongoose.Schema;
 var NodeSchema = new Schema(
     {
         name: String,
-        node_type: {
+        nodeType: {
             type: String,
             required: true, 
             enum: ['document', 'action']
@@ -13,15 +13,11 @@ var NodeSchema = new Schema(
         description: String,
         dependencies: [{type: Schema.Types.ObjectId, ref: 'Node'}],
         hints: [{type:String,required:false}],
-        instution: [{
-                name: String,
-                description: String,
-                location: {
-                    lat: Schema.Types.Number,
-                    long: Schema.Types.Number
-                }
-        }],
-        related_links: [
+        institution: {
+            name: String,
+            description: String
+        },
+        relatedLinks: [
             {
                 name: String,
                 href: String
