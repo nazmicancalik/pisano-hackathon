@@ -23,7 +23,8 @@ var NodeSchema = new Schema(
                     lat: Schema.Types.Number,
                     long: Schema.Types.Number
                 }    
-        }],
-        
+        }]
     }
 );
+
+module.exports = mongoose.model('Node', NodeSchema);
