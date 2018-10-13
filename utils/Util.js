@@ -20,25 +20,19 @@ exports.topologicalSort = async function (node) {
         const promises = [];
         (node.dependencies || []).forEach((dependency) => {
             if (!graph[dependency]) {
-                console.log("doop");
                 promises.push((async() => {
                     try {
                         const innerPromises = [];
-                        console.log("poop");
                         await (new Promise ((resolve, reject) => nodeController.getNode(dependency, (innerNode) => {
-                            console.log("hello node");
                             if(!graph[dependency]){
                                 graph[dependency] = innerNode.dependencies || [];
                                 innerPromises.push(sexy(innerNode));
                             }
-                            console.log('*********');
-                            console.log(graph);
-                            console.log('*********');
                             resolve();
                         })));
                         await Promise.all(innerPromises);
                     } catch(err) {
-                        console.log("erere", err)
+                        console.log("Error", err)
                     }
                 })())
             }
@@ -46,19 +40,14 @@ exports.topologicalSort = async function (node) {
         await Promise.all(promises);
     }
     await sexy(node);
-/*
-    async.each(dependencies, function(aDependency){
-        nodeController.getNode(aDependency, function(node){
-            console.log('**********');
-            console.log(graph);
-            console.log('**********');
-            graph[aDependency] = node.dependencies;
-        });
-        console.log('girdi');
-    }, function(){
-        console.log(graph);
+
+    // console.log('========');
+    // console.log(graph);
+    // console.log('========');
+
+    var res = [];
+    try {
         var sorted_ids = ds.solve(graph);
-        var res = [];
 
         var j;
         for(j = 0; j < sorted_ids.length; j++) {
@@ -66,22 +55,10 @@ exports.topologicalSort = async function (node) {
         }
 
         return res;
-    });
-*/
-    
-    console.log('========');
-    console.log(graph);
-    console.log('========');
-
-    var sorted_ids = ds.solve(graph);
-    var res = [];
-
-    var j;
-    for(j = 0; j < sorted_ids.length; j++) {
-        res.push(mongoose.Types.ObjectId(sorted_ids[j]));
+    } catch (err) {
+        res.push(mongoose.Types.ObjectId(id))
+        return res;
     }
-
-    return res;
 }
 
 exports.sort = function(nodes,sorted_id_list) {
