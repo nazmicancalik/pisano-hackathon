@@ -19,19 +19,18 @@ exports.node_detail = function(req,res,next) {
         return ;
     }
     Node.findById(req.params.id)
-        .exec(function (err, node_details) {
+        .exec(async function (err, node_details) {
             if (err || !node_details) { 
               //res.status(404).send;
               return next(err);
             }
             //Successful, so send
-            var sorted_list = Util.topologicalSort(node_details);
+            var sorted_list = await Util.topologicalSort(node_details);
 
             Node.find({
                 '_id': { $in: sorted_list }
             }, function(err, docs){
                 var response = Util.sort(docs,sorted_list);
-                console.log(sorted_list);
                 res.send(response);
             });
         });
