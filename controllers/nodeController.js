@@ -13,11 +13,12 @@ exports.nodes_list = function(req,res) {
     });
 }
 
-exports.node_detail = function(req,res,next) {
+exports.node_detail = function(req,res) {
     Node.findById(req.params.id)
         .exec(function (err, node_details) {
             if (err) { 
-              return next(err); 
+              res.status(404).send;
+            //return next(err); 
             }
             //Successful, so send
             var sorted_list = Util.topologicalSort(node_details);
