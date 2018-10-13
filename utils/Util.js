@@ -1,25 +1,31 @@
-var TopoSort = require('topo-sort');
+// var TopoSort = require('topo-sort');
+var ds = require('dependency-solver'); 
 var mongoose = require('mongoose');
 var _ = require('lodash');
 
 var nodeController = require('../controllers/nodeController');
 
 exports.topologicalSort = function(node) {
+    
     var id = node.id;
     var dependencies = node.dependencies;
 
-    var tsort = new TopoSort();
-
-    tsort.add(id,dependencies);
+    // var tsort = new TopoSort();
+    // tsort.add(id,dependencies);
+    var graph = {};
+    
+    graph[id] = dependencies;
     
     var i;
     for(i = 0; i < dependencies.length; i++) {
         nodeController.getNode(dependencies[i],function(node){
-            tsort.add(dependencies[i],node);
+            // tsort.add(dependencies[i],node);
+            graph[dependencies[i],node.dependencies]
         });
     }
 
-    var sorted_ids = tsort.sort();
+    // var sorted_ids = tsort.sort();
+    var sorted_ids = ds.solve(graph);
     var res = [];
 
     var j;
@@ -47,3 +53,14 @@ var getElement = function(list,id) {
     var elementToReturn = _.find(list,{_id:id});
     return elementToReturn;
 }
+
+
+/*
+var tsort = new TopoSort();
+
+tsort.add('a',['b','c','d']);
+tsort.add('b',['c','t']);
+
+var sorted_ids = tsort.sort();
+console.log(sorted_ids);
+*/
