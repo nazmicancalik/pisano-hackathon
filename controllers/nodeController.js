@@ -39,7 +39,7 @@ exports.node_detail = function(req,res,next) {
 
 exports.getNode = function(id,callback) {
     Node.findById(id)
-        .select("-dependencies")
+        //.select("-dependencies")
         .exec(function (err, node_details) {
             if (err) { 
               return next(err); 
