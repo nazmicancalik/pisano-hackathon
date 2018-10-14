@@ -46,6 +46,7 @@ _addNode = async (req, res, next, level) => {
         // the current node does not exist
         var newNode = new Node({
             name: currentNode.name,
+            institution: currentNode.institution,
             nodeType: currentNode.nodeType || "document",
             description: currentNode.description,
             dependencies: await Promise.all(
