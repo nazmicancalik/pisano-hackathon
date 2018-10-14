@@ -2,6 +2,8 @@ var mongoose = require('mongoose');
 var Node = require('../models/node');
 var Util = require('../utils/Util');
 
+var _ = require('lodash');
+
 exports.nodes_list = function(req,res) {
     Node.find({}, 'id name')
     .exec(function (err, list_nodes) {
@@ -36,8 +38,37 @@ exports.node_detail = function(req,res,next) {
         });
 }
 
-exports.addNode = function(req,res) {
+exports.addNode = function(req,res,next) {
+    console.log('Add note giriş');
+    var node = new Node({
+        name: req.body.name,
+        nodeType: req.body.nodeType || 'document',
+        description: req.body.description,
+        dependencies: _.map(req.body.dependencies, function(aDepenedency){
+            // If the dependency already exist in the database.
+            if(aDepenedency.id){
+                return aDepenedency.id;
+            } else {
+                console.log('Kayıtlı olmayan dep');
+                var aDep = new Node({
+                    name: aDepenedency.name,
+                    description: aDepenedency.description,
+                    dependencies: []
+                });
 
+                aDep.save(function(err) {
+                    if (err) {return next(err);}
+                    return aDep.id;
+                });
+            }
+        })
+    });
+
+    node.save(function(err){
+        if (err) { return next(err); }
+        console.log('Node', node);
+        res.send(node);
+    });
 };
 
 exports.getNode = function(id,callback) {
