@@ -26,7 +26,8 @@ var NodeSchema = new Schema(
                 name: String,
                 href: String
             }
-        ]
+        ],
+        conditions: [{type: String, required: false}]
     }
 );
 

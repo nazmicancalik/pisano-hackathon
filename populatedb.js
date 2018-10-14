@@ -14,7 +14,7 @@ mongoose.connection.on('error', console.error.bind(console, 'MongoDB connection 
 
 var nodes = [];
 
-function nodeCreate(name, node_type, description,dependencies, hints, instutition, related_links, cb) {
+function nodeCreate(name, node_type, description,dependencies, hints, instutition, related_links, conditions, cb) {
   nodeDetail = { 
     name: name,
     node_type: node_type,
@@ -22,7 +22,8 @@ function nodeCreate(name, node_type, description,dependencies, hints, instutitio
     dependencies: dependencies,
     hints: hints,
     instutition: instutition,
-    related_links: related_links
+    related_links: related_links,
+    conditions: conditions
   }
   
   var node = new Node(nodeDetail);
@@ -41,13 +42,25 @@ function nodeCreate(name, node_type, description,dependencies, hints, instutitio
 function createNodes(cb) {
     async.parallel([
         function(callback) {
-          nodeCreate('Passport', 'document', 'Description' ,[], ['Hint 1','Hint 2', 'Hint 3'], { name: 'Nüfus Müdürlüğü', description: 'Description here', loc: { lat: 1, long: 2}}, {name: 'link1', href:'google.com'}, callback);
+          nodeCreate('Pasaport', 'document', '' ,[], [], {}, [], [], callback);
         },
         function(callback) {
-          nodeCreate('Nüfus Cüzdanı', 'document', 'Description' ,[], ['Hint 1','Hint 2', 'Hint 3'], { name: 'Adliye', description: 'Description here', loc: { lat: 1, long: 2}}, {name: 'link2', href:'google.com'}, callback);
+          nodeCreate('Teslimat', 'document', 'Pasaportunuz başvuru esnasında belirttiğiniz adrese kurye veya kargo ile gönderiliyor. Devlet randevu gününden sonra 5-7 iş günü içinde elinizde olacağını taahhüt ediyor.' ,[], ['Pasaport kaç günde elinize ulaşır? Bordo pasaportların evinize ulaşması başvurudan sonra 10 gün kadar alabilir. Şimdiye kadar bize her zaman başvurudan sonraki 3. iş gününde teslimatı gerçekleşti ama devletin taahhüt ettiği süre,  5-7 iş günü basım + 3 gün kargo/ kurye olarak 10 gün. Bu süreler yoğunluğa göre değişebiliyor. Özellikle bayram, resmi tatil, yılbaşı, sömestr gibi dönemler en yoğun dönemler. Bu yoğun dönemlerde süreler uzayabilir. ','Hint 2', 'Hint 3'], [], [], [], callback);
         },
         function(callback) {
-          nodeCreate('Foto', 'action', 'Description',[], ['Hint 1','Hint 2', 'Hint 3'], { name: 'Fotoğrafçı', description: 'Description here', loc: { lat: 1, long: 2}}, {name: 'link1', href:'google.com'}, callback);
+          nodeCreate('Randevu Al', 'action', 'Randevu  $$1 adresinden alınıyor. Aynı zamanda 09:00- 18:00 saatleri arasında +90 312 462 91 46 ve 47’yi Acil Pasaport hattını arayarak da yapabilirsiniz',[], ['Hint 1','Hint 2', 'Hint 3'], { name: 'İl Nüfus ve İlçe Emniyet Müdürlüğü', description: ''}, [{name: 'Randevu Portalı', href:'https://randevu.nvi.gov.tr/#/nvi/anasayfa'}], [], callback);
+        },
+        function(callback) {
+            nodeCreate('Nüfus Cüzdanı', 'document', '2 adet',[], [], {}, [], [], callback);
+        },
+        function(callback) {
+            nodeCreate('Eski pasaportlar', 'document', '',[], [], {}, [], ["Eski pasaportun varsa"], callback);
+        },
+        function(callback) {
+            nodeCreate('Pasaport Harcı ve Passport Bedeli Dekontları', 'document', '',[], [], {}, [], [], callback);
+        },
+        function(callback) {
+            nodeCreate('Muvafakatname', 'document', '',[], [], {}, [], ['Eğer reşit değilsen'], callback);
         }],
         // optional callback
         cb);
