@@ -13,4 +13,6 @@ router.get('/:id', NodeController.node_detail);
 // Post Requests
 router.post('/', NodeController.addNode);
 
+router.post('/:id', NodeController.addHint);
+
 module.exports = router;

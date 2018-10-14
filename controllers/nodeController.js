@@ -71,6 +71,27 @@ exports.addNode = async function(req,res,next) {
     });
 };
 
+exports.addHint = async function(req,res,next) {
+    Node.findById(req.params.id)
+        .exec(function (err, node) {
+            if (err) { 
+              return next(err); 
+            }
+            //Successful, so update
+            if (node.hints){
+                node.hints = node.hints.concat(req.body.hints);
+            } else {
+                node.hints = req.body.hints;
+            }
+            Node.findByIdAndUpdate(req.params.id, node, {}, function(err,res_node){
+                if (err) { return next(err); }
+                
+                // Successful - send the node back.
+                res.send(node);
+            })
+        });
+}
+
 exports.getNode = function(id,callback) {
     Node.findById(id)
         .exec(function (err, node_details) {
