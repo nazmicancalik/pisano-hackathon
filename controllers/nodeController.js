@@ -36,6 +36,10 @@ exports.node_detail = function(req,res,next) {
         });
 }
 
+exports.addNode = function(req,res) {
+
+};
+
 exports.getNode = function(id,callback) {
     Node.findById(id)
         //.select("-dependencies")
@@ -46,4 +50,4 @@ exports.getNode = function(id,callback) {
             //Successful, so invoke callback
             callback(node_details);
         });
-}
+};

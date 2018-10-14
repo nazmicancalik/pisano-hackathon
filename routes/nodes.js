@@ -10,4 +10,7 @@ router.get('/', NodeController.nodes_list);
 /* GET Specific node and its dependencies, Topological sort will be here, ordered list */
 router.get('/:id', NodeController.node_detail);
 
+// Post Requests
+router.post('/', NodeController.addNode);
+
 module.exports = router;
