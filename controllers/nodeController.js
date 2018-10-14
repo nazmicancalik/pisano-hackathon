@@ -38,13 +38,13 @@ exports.node_detail = function(req,res,next) {
         });
 }
 
-exports.addNode = function(req,res,next) {
-    console.log('Add note giriş');
+exports.addNode = async function(req,res,next) {
+    console.log('Add note giriş', req.body);
     var node = new Node({
         name: req.body.name,
         nodeType: req.body.nodeType || 'document',
         description: req.body.description,
-        dependencies: _.map(req.body.dependencies, function(aDepenedency){
+        dependencies: await Promise.all(_.map(req.body.dependencies, async function(aDepenedency){
             // If the dependency already exist in the database.
             if(aDepenedency.id){
                 return aDepenedency.id;
@@ -52,16 +52,18 @@ exports.addNode = function(req,res,next) {
                 console.log('Kayıtlı olmayan dep');
                 var aDep = new Node({
                     name: aDepenedency.name,
+                    nodeType: aDepenedency.nodeType || 'document',
                     description: aDepenedency.description,
                     dependencies: []
                 });
-
-                aDep.save(function(err) {
-                    if (err) {return next(err);}
-                    return aDep.id;
-                });
+                try {
+                    const savedDep = await aDep.save();
+                    return savedDep.id
+                } catch(err) {
+                    return next(err);
+                }
             }
-        })
+        }))
     });
 
     node.save(function(err){
