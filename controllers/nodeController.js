@@ -72,6 +72,10 @@ exports.addNode = async function(req,res,next) {
 };
 
 exports.addHint = async function(req,res,next) {
+    if (!req.body.hints) {
+        res.status(400).send();
+        return;
+    }
     Node.findById(req.params.id)
         .exec(function (err, node) {
             if (err) { 
