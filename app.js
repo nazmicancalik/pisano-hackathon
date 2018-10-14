@@ -5,7 +5,6 @@ var logger = require('morgan');
 var mongoose = require('mongoose');
 
 var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
 var mockRouter = require('./routes/mock');
 var nodesRouter = require('./routes/nodes');
 
@@ -32,7 +31,6 @@ app.use('/', indexRouter);
 
 
 // Register API Routes
-app.use('/api/users', usersRouter);
 app.use('/api/mock', mockRouter);
 app.use('/api/nodes', nodesRouter);
 

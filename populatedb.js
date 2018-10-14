@@ -14,7 +14,7 @@ mongoose.connection.on('error', console.error.bind(console, 'MongoDB connection 
 
 var nodes = [];
 
-function nodeCreate(name, node_type, description,dependencies, hints, instutition, related_links, conditions, cb) {
+function nodeCreate(name, nodeType, description,dependencies, hints, instutition, related_links, conditions, cb) {
   nodeDetail = { 
     name: name,
     nodeType: nodeType,
