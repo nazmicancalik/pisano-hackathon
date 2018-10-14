@@ -39,21 +39,19 @@ exports.node_detail = function(req,res,next) {
 }
 
 exports.addNode = async function(req,res,next) {
-    console.log('Add note giriş', req.body);
     var node = new Node({
         name: req.body.name,
         nodeType: req.body.nodeType || 'document',
         description: req.body.description,
-        dependencies: await Promise.all(_.map(req.body.dependencies, async function(aDepenedency){
+        dependencies: await Promise.all(_.map(req.body.dependencies, async function(aDependency){
             // If the dependency already exist in the database.
-            if(aDepenedency.id){
-                return aDepenedency.id;
+            if(aDependency.id){
+                return aDependency.id;
             } else {
-                console.log('Kayıtlı olmayan dep');
                 var aDep = new Node({
-                    name: aDepenedency.name,
-                    nodeType: aDepenedency.nodeType || 'document',
-                    description: aDepenedency.description,
+                    name: aDependency.name,
+                    nodeType: aDependency.nodeType || 'document',
+                    description: aDependency.description,
                     dependencies: []
                 });
                 try {
@@ -75,7 +73,6 @@ exports.addNode = async function(req,res,next) {
 
 exports.getNode = function(id,callback) {
     Node.findById(id)
-        //.select("-dependencies")
         .exec(function (err, node_details) {
             if (err) { 
               return next(err); 
