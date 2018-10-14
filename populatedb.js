@@ -17,7 +17,7 @@ var nodes = [];
 function nodeCreate(name, node_type, description,dependencies, hints, instutition, related_links, conditions, cb) {
   nodeDetail = { 
     name: name,
-    node_type: node_type,
+    nodeType: nodeType,
     description: description,
     dependencies: dependencies,
     hints: hints,
@@ -82,7 +82,5 @@ function(err, results) {
     // All done, disconnect from database
     mongoose.connection.close();
 });
-
-
 
 
